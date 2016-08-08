@@ -1,4 +1,7 @@
-
+body
+{
+	background-color: rgb(255,0,205);
+}
 h1
 {
 	text-align:center;
@@ -35,13 +38,22 @@ li a
 }
 
 li a:hover{
-    background-color: #111;
+  background-color: #111;
 }
 p
 {
 	text-align:center;
 }
-body
+#contact
 {
-	background-color: rgb(255,245,255);
+	float:left;
+}
+#comments
+{
+	float:right;
+}
+#msgBoard
+{
+	
+	background-color: rgb(255,255,255);
 }
