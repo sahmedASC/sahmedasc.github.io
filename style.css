@@ -38,7 +38,9 @@ p
 }
 #contact
 {
-	display:inline;
+	display:inline-block;
+	width: 50%;
+	margin:auto;
 }
 #contact ul li
 {
@@ -48,12 +50,18 @@ p
 }
 #contact a img
 {
+	margin:auto;
 	max-width: 32px;
 	max-height: 32px;
 }
 #contact a:hover
 {
 	background-color:#CAB9F1;
+}
+#back img
+{
+	max-width: 40px;
+	max-height: 40px;
 }
 /*#comments
 {
