@@ -63,6 +63,12 @@ p
 	max-width: 40px;
 	max-height: 40px;
 }
+#about_me_summary
+{
+	float:left;
+	font-size: 36px;
+	margin-left: 125px;
+}
 /*#comments
 {
 	float:right;
