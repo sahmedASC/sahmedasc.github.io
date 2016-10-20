@@ -72,15 +72,22 @@ p
 	margin-top: 150px;
 }
 
-.topics
+#topics li
 {
-	list-style-type: none;
+    list-style-type: none;
+    background-color: #CAB9F1;
+    text-decoration: none;
 }
-.topics a hover
+
+#topics li a
 {
-	box-shadow: 0 14px 20px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
-	transform: scale(1.02);
+    display:inline;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
 }
+
 /*#comments
 {
 	float:right;
