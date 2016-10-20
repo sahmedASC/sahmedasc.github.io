@@ -88,7 +88,10 @@ p
     text-decoration: none;
 }
 
-
+#topics li a hover
+{
+    
+}
 
 /*TODO: add transformations*/
 /*TODO: implement animate.css*/
