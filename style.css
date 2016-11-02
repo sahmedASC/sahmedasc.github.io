@@ -88,9 +88,12 @@ p
     text-decoration: none;
 }
 
-#topics li a hover
+.topics a:hover
 {
-    
+    -webkit-transform: translateX(-400px);
+    transform: translateX(-400px);
+    color: dodgerblue;
+    stroke: dodgerblue;
 }
 
 /*TODO: add transformations*/
