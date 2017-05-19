@@ -1,6 +1,6 @@
 body
 {
-	background-color: #00FF91;
+	background-color:#00C4DA;
 }
 h1
 {
@@ -54,7 +54,7 @@ p
 }
 #contact a:hover
 {
-	background-color:#00FF91;
+	background-color: #00C4DA;
 }
 #back img
 {
@@ -75,7 +75,7 @@ p
 #topics li
 {
     list-style-type: none;
-    background-color: #00FF91;
+    background-color: #00C4DA;
     text-decoration: none;
 }
 
