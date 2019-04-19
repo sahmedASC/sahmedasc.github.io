@@ -1,101 +1,76 @@
-body
-{
-	background-color:#00C4DA;
+.tiles{
+    height: 250px;
+    border-radius: 25px;
+    width: 250px;
+    text-align: center; 
+    
+}    
+.tiles p{
+    padding-top: 45%;
+    font-family: Lucida Console,Lucida Sans Typewriter,monaco,Bitstream Vera Sans Mono,monospace;
+    text-align: center;
+    font-size: 30px;
 }
-h1
-{
-	text-align:center;
-}
-#Navigation_Bar
-{
-	list-style-type: none;
-    margin: 0;
-    padding: 0;
+
+#main{
+    padding-top: 15%;
+    height: 100%;
+    text-align: center;
     overflow: hidden;
-    background-color: #333;
-    text-align:center;
+    list-style-type: non;
+    
 }
-#Navigation_Bar li
-{
-	display: inline;
-	text-align: center;
+#main li{
+    display: inline-block;
+    padding: 10px;
+    overflow: hidden;
+    transform: translate(0px,0px);
+    transition-duration: 1s;
 }
-#Navigation_Bar li a
-{
-    display:inline;
-    color: white;
+#main li:hover{
+    filter: drop-shadow(8px 8px 10px );
+    transform: translate(0px,-100px);
+    transition-duration: 1s;
+}
+html{
+    height: 100%;
+    width: 100%;
+    background-color: cadetblue;
+}
+
+#wrapper{
+    
+    background: #ECECEC;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    top: 0;
+    margin-left: 5%;
+    width: 90%;
+}
+#name{
+    padding-top: 5%;
+    font-size: 60px;
     text-align: center;
-    padding: 14px 16px;
+    font-family: Lucida Console,Lucida Sans Typewriter,monaco,Bitstream Vera Sans Mono,monospace;
+    transition-duration: 0.7s;
+    transform: scale(1);
+}
+#name:hover{
+    
+    transition-duration: 0.7s;
+    transform: scale(1.5);}
+a{
     text-decoration: none;
-}
-#Navigation_Bar li a:hover
-{
-  background-color: #111;
-}
-p
-{
-	text-align:center;
-}
-#contact
-{
-	color: black;
-	text-decoration: none;
-	text-align: center;
-}
-#contact li
-{
-	list-style-type: none;
-	display:inline;
-}
-#contact a img
-{
-	max-width: 48px;
-	max-height: 48px;
-}
-#contact a:hover
-{
-	background-color: #00C4DA;
-}
-#back img
-{
-	max-width: 40px;
-	max-height: 40px;
-}
-#about_me_summary
-{
-	float:left;
-	font-size: 36px;
-	margin-left: 125px;
-}
-#topics
-{
-	margin-top: 150px;
-}
-
-#topics li
-{
-    list-style-type: none;
-    background-color: #00C4DA;
-    text-decoration: none;
-}
-
-#topics li a
-{
-    display:inline;
     color: black;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
 }
 
-.topics a:hover
-{
-    -webkit-transform: translateX(-400px);
-    transform: translateX(-400px);
-    color: dodgerblue;
-    stroke: dodgerblue;
+#basic_text{
+    font-family: Lucida Console,Lucida Sans Typewriter,monaco,Bitstream Vera Sans Mono,monospace;
+    font-size: 50px;
+    
 }
-
 /*TODO: add transformations*/
 /*TODO: implement animate.css*/
 
