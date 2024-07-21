@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,73 +11,134 @@
         /* Ensure body takes up full height */
         body {
             margin: 0;
-            font-family: Arial, sans-serif; /* Optional: Set a font family */
+            font-family: Arial, sans-serif;
+            /* Optional: Set a font family */
         }
-    
+
         /* Style for the title box */
         #title-box {
-            text-align: center; /* Center-align the text */
-            font-size: 24px; /* Larger font size */
-            font-weight: bold; /* Bold text */
-            padding: 20px; /* Space around the text */
-            margin-bottom: 20px; /* Space below the text box */
-            background-color: #f0f0f0; /* Light background color */
-            border-bottom: 2px solid #ccc; /* Border at the bottom */
-            width: 100%; /* Full width of the page */
-            box-sizing: border-box; /* Include padding and border in width */
+            text-align: center;
+            /* Center-align the text */
+            font-size: 24px;
+            /* Larger font size */
+            font-weight: bold;
+            /* Bold text */
+            padding: 20px;
+            /* Space around the text */
+            margin-bottom: 20px;
+            /* Space below the text box */
+            background-color: #f0f0f0;
+            /* Light background color */
+            border-bottom: 2px solid #ccc;
+            /* Border at the bottom */
+            width: 100%;
+            /* Full width of the page */
+            box-sizing: border-box;
+            /* Include padding and border in width */
         }
-    
+
         /* Style for the narrative box */
         #narrative-box {
-            text-align: left; /* Left-align the text */
-            font-size: 16px; /* Regular font size */
-            padding: 20px; /* Space around the text */
-            margin-bottom: 20px; /* Space below the text box */
-            background-color: #fafafa; /* Light background color */
-            border: 1px solid #ddd; /* Border around the box */
-            width: 100%; /* Full width of the page */
-            box-sizing: border-box; /* Include padding and border in width */
+            text-align: left;
+            /* Left-align the text */
+            font-size: 16px;
+            /* Regular font size */
+            padding: 20px;
+            /* Space around the text */
+            margin-bottom: 20px;
+            /* Space below the text box */
+            background-color: #fafafa;
+            /* Light background color */
+            border: 1px solid #ddd;
+            /* Border around the box */
+            width: 100%;
+            /* Full width of the page */
+            box-sizing: border-box;
+            /* Include padding and border in width */
         }
-    
+
         /* Style for the SVG container */
         svg {
             display: block;
-            margin: 0 auto; /* Center the SVG horizontally */
-            border: 1px solid #ccc; /* Optional: Border for visibility */
+            margin: 0 auto;
+            /* Center the SVG horizontally */
+            border: 1px solid #ccc;
+            /* Optional: Border for visibility */
         }
-    
+
         /* Style for the link container */
         #link-container {
-            text-align: center; /* Center-align the link */
-            margin-top: 20px; /* Space above the link */
+            display: flex;
+            /* Use flexbox to align links */
+            justify-content: space-between;
+            /* Space links apart */
+            margin-top: 20px;
+            /* Space above the link container */
+            padding: 0 20px;
+            /* Horizontal padding */
         }
-    
-        #link-container a {
-            text-decoration: none; /* Remove underline from link */
-            color: #007BFF; /* Link color */
-            font-size: 18px; /* Font size for the link */
-            font-weight: bold; /* Bold text for the link */
+
+        /* Style for individual navigation links */
+        .nav-link {
+            text-decoration: none;
+            /* Remove underline from links */
+            font-size: 18px;
+            /* Font size for the links */
+            font-weight: bold;
+            /* Bold text for the links */
+            padding: 10px 20px;
+            /* Space around the text */
+            border-radius: 5px;
+            /* Rounded corners */
+            display: inline-block;
+            /* Ensure padding and background work */
         }
-    
-        #link-container a:hover {
-            text-decoration: underline; /* Underline on hover */
+
+        /* Style for the back link */
+        .nav-link.back {
+            background-color: #ffdddd;
+            /* Light red background */
+            color: #d80000;
+            /* Red text */
+        }
+
+        /* Style for the forward link */
+        .nav-link.forward {
+            background-color: #ddffdd;
+            /* Light green background */
+            color: #007700;
+            /* Dark green text */
+        }
+
+        .nav-link:hover {
+            opacity: 0.8;
+            /* Slightly transparent on hover */
+        }
+
+        /* Style for the back link hover */
+        .nav-link.back:hover {
+            background-color: #ffcccc;
+            /* Slightly darker red */
+        }
+
+        /* Style for the forward link hover */
+        .nav-link.forward:hover {
+            background-color: #ccffcc;
+            /* Slightly darker green */
         }
     </style>
-    
-    
+
 </head>
+
 <body>
     <div id="title-box">
-        Analyzing the Effect of Engine Cylinders on MPG
+        Analyzing the Effect of &gt6 Engine Cylinders on MPG
     </div>
 
     <!-- Paragraph box for additional narrative -->
     <div id="narrative-box">
-        This Narrative Visualization provides an in-depth analysis of how the number of engine cylinders affects the average miles per gallon (MPG) for city and highway driving.
-        By examining different vehicles with differing engine cylinders, we will uncover insights that can help in understanding fuel efficiency better.
-        Follow along as we visualize these patterns through various charts and data representations.
-        Take note that any vehicle shown to have high amounts of MPG across both the city and highway are considered more fuel efficient.
-        Simply put, if a dot is more on the upper right corner of the graph, it is more fuel efficient.
+        In this chart we talk about how having greater than 6 engine cylinders will affect the
+        MPG that a vehicle can achieve. We have removed a lot of the dataset at this point and are left with very few cars to analyze. The efficiency that we analyze has greatly decreased.
     </div>
 
     <svg width="800" height="600"></svg>
@@ -243,6 +305,9 @@
         // Parse the data from the script tag with id 'csv-data'
         const data = parseCSVFromScript('csv-data');
 
+        // Filter data to include only vehicles with 6 or fewer engine cylinders
+        const filteredData = data.filter(d => +d.EngineCylinders > 6);
+
         const svg = d3.select("svg"),
             width = +svg.attr("width"),
             height = +svg.attr("height");
@@ -260,11 +325,11 @@
 
         // Set up scales
         const x = d3.scaleLinear()
-            .domain([0, d3.max(data, d => d.AverageHighwayMPG) + 5])  // Added some padding for better visibility
+            .domain([0, d3.max(filteredData, d => d.AverageHighwayMPG) + 5])  // Added some padding for better visibility
             .range([0, plotWidth]);
 
         const y = d3.scaleLinear()
-            .domain([0, d3.max(data, d => d.AverageCityMPG) + 5])  // Added some padding for better visibility
+            .domain([0, d3.max(filteredData, d => d.AverageCityMPG) + 5])  // Added some padding for better visibility
             .range([plotHeight, 0]);
 
         const g = svg.append("g")
@@ -277,14 +342,14 @@
             .attr("text-anchor", "middle")
             .attr("font-size", "18px")
             .attr("font-weight", "bold")
-            .text("Vehicle City vs. Highway MPG (Any # of Engine Cylinders)");
+            .text("Vehicle City vs. Highway MPG (>6 of Engine Cylinders)");
 
         // Add x-axis
         g.append("g")
             .attr("transform", `translate(0,${plotHeight})`)
             .call(d3.axisBottom(x))
             .append("text")
-            .attr("x", plotWidth/2)
+            .attr("x", plotWidth / 2)
             .attr("y", margin.bottom - 10)
             .attr("fill", "#000")
             .attr("text-anchor", "end")
@@ -303,38 +368,58 @@
 
         // Add circles for scatter plot
         g.selectAll("circle")
-            .data(data)
+            .data(filteredData)
             .enter().append("circle")
             .attr("cx", d => x(d.AverageHighwayMPG))
             .attr("cy", d => y(d.AverageCityMPG))
             .attr("r", 5)
             .style("fill", "blue")          // Fill color of the circles
             .style("stroke", "black")       // Border color of the circles
-            .style("stroke-width", 1); 
+            .style("stroke-width", 1);
 
         // Add annotation to the X-axis
-            const annotations = [
-                {
-                    note: {
-                        label: "Notice the axis domain and range at this first view. As we go on pay attention to how the dataset changes and what scales are possible.",
-                        align: "left",
-                        orientation: "bottomCenter"  // Position label below and to the right of the point
-                    },
-                    x: x.range()[0],  // X coordinate at the right edge of the plot area
-                    y: y.range()[1],  // Y coordinate at the bottom edge of the plot area
-                    dy: 150,  // Offset label vertically
-                    dx: 100,  // Offset label horizontally
-                    subject: {
-                        radius: 0,  // No visible radius
-                        radiusPadding: 0,
-                        x1: 0,  // Line starts from the bottom of the label
-                        x2: 0,  // Line ends at the annotation point (default)
-                        y1: 0,  // Line starts from the bottom of the label
-                        y2: 30  // Length of the line
-                    },
-                    type: d3.annotationLabel
-                }
-            ];
+        const annotations = [
+            {
+                note: {
+                    label: "Notice the axis domain and range at this view. In the previous chart we saw anywhere from 25-40 MPG. Now we only see 20-30 MPG.",
+                    align: "left",
+                    orientation: "bottomCenter" 
+                },
+                x: x.range()[0],  
+                y: y.range()[1],  
+                dy: 150,  
+                dx: 100,  
+                subject: {
+                    radius: 0,  
+                    radiusPadding: 0,
+                    x1: 0,  
+                    x2: 0,  
+                    y1: 0,  
+                    y2: 30  
+                },
+                type: d3.annotationLabel
+            },
+            {
+                note: {
+                    label: "There are only a few vehicles with over 6 cylinders as these are usually specialized vehicles. They have extremely poor efficiency especially in the city.",
+                    align: "left",
+                    orientation: "bottomCenter"  
+                },
+                x: 500,  
+                y: 180,  
+                dy: 50,  
+                dx: 60,  
+                subject: {
+                    radius: 5,  
+                    radiusPadding: 5,
+                    x1: 0,  
+                    x2: 0,  
+                    y1: 0,  
+                    y2: 30  
+                },
+                type: d3.annotationLabel
+            }
+        ];
 
         const makeAnnotations = d3.annotation()
             .annotations(annotations);
@@ -344,8 +429,11 @@
             .attr("transform", `translate(${margin.left},${margin.top})`)
             .call(makeAnnotations);
     </script>
+    <!-- Link container with styled navigation links -->
     <div id="link-container">
-        <a href="6cylinders.html">Go to 6 Cylinders Analysis &rarr; </a>
+        <a href="6cylinders.html" class="nav-link back">&larr; Go to &lt6 Cylinder Analysis</a>
+        <a href="readerDriven.html" class="nav-link forward">Go to Reader Driven Analysis &rarr;</a>
     </div>
 </body>
+
 </html>
