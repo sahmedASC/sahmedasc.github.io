@@ -8,123 +8,76 @@
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-annotation/2.5.1/d3-annotation.min.js"></script>
     <style>
-        /* Ensure body takes up full height */
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            /* Optional: Set a font family */
         }
 
-        /* Style for the title box */
         #title-box {
             text-align: center;
-            /* Center-align the text */
             font-size: 24px;
-            /* Larger font size */
             font-weight: bold;
-            /* Bold text */
             padding: 20px;
-            /* Space around the text */
             margin-bottom: 20px;
-            /* Space below the text box */
             background-color: #f0f0f0;
-            /* Light background color */
             border-bottom: 2px solid #ccc;
-            /* Border at the bottom */
             width: 100%;
-            /* Full width of the page */
             box-sizing: border-box;
-            /* Include padding and border in width */
         }
 
-        /* Style for the narrative box */
         #narrative-box {
             text-align: left;
-            /* Left-align the text */
             font-size: 16px;
-            /* Regular font size */
             padding: 20px;
-            /* Space around the text */
             margin-bottom: 20px;
-            /* Space below the text box */
             background-color: #fafafa;
-            /* Light background color */
             border: 1px solid #ddd;
-            /* Border around the box */
             width: 100%;
-            /* Full width of the page */
             box-sizing: border-box;
-            /* Include padding and border in width */
         }
 
-        /* Style for the SVG container */
         svg {
             display: block;
             margin: 0 auto;
-            /* Center the SVG horizontally */
             border: 1px solid #ccc;
-            /* Optional: Border for visibility */
         }
 
-        /* Style for the link container */
         #link-container {
             display: flex;
-            /* Use flexbox to align links */
             justify-content: space-between;
-            /* Space links apart */
             margin-top: 20px;
-            /* Space above the link container */
             padding: 0 20px;
-            /* Horizontal padding */
         }
 
-        /* Style for individual navigation links */
         .nav-link {
             text-decoration: none;
-            /* Remove underline from links */
             font-size: 18px;
-            /* Font size for the links */
             font-weight: bold;
-            /* Bold text for the links */
             padding: 10px 20px;
-            /* Space around the text */
             border-radius: 5px;
-            /* Rounded corners */
             display: inline-block;
-            /* Ensure padding and background work */
         }
 
-        /* Style for the back link */
         .nav-link.back {
             background-color: #ffdddd;
-            /* Light red background */
             color: #d80000;
-            /* Red text */
         }
 
-        /* Style for the forward link */
         .nav-link.forward {
             background-color: #ddffdd;
-            /* Light green background */
             color: #007700;
-            /* Dark green text */
         }
 
         .nav-link:hover {
             opacity: 0.8;
-            /* Slightly transparent on hover */
         }
 
-        /* Style for the back link hover */
         .nav-link.back:hover {
             background-color: #ffcccc;
-            /* Slightly darker red */
         }
 
-        /* Style for the forward link hover */
         .nav-link.forward:hover {
             background-color: #ccffcc;
-            /* Slightly darker green */
         }
     </style>
 
@@ -135,7 +88,6 @@
         Analyzing the Effect of &lt= 6 Engine Cylinders on MPG
     </div>
 
-    <!-- Paragraph box for additional narrative -->
     <div id="narrative-box">
         In this chart we will talk about specifically how having anywhere from 0 to 6 engine cylinders will affect the
         MPG that a vehicle can achieve. We have cut out a good portion of cars from the data set. Notice how the chart looks very similar.
@@ -143,7 +95,6 @@
 
     <svg width="800" height="600"></svg>
 
-    <!-- Embed the CSV data at the top of the file -->
     <script id="csv-data" type="text/csv">
         Make,Fuel,EngineCylinders,AverageHighwayMPG,AverageCityMPG
         Acura,Gasoline,4,35,25
@@ -296,46 +247,39 @@
     </script>
 
     <script>
-        // Function to parse the CSV data from the script tag
         function parseCSVFromScript(scriptId) {
             const csvData = document.getElementById(scriptId).textContent.trim();
             return d3.csvParse(csvData);
         }
 
-        // Parse the data from the script tag with id 'csv-data'
         const data = parseCSVFromScript('csv-data');
 
-        // Filter data to include only vehicles with 6 or fewer engine cylinders
         const filteredData = data.filter(d => +d.EngineCylinders <= 6);
 
         const svg = d3.select("svg"),
             width = +svg.attr("width"),
             height = +svg.attr("height");
 
-        // Margins for the plot area
         const margin = { top: 40, right: 40, bottom: 60, left: 60 };
         const plotWidth = width - margin.left - margin.right;
         const plotHeight = height - margin.top - margin.bottom;
 
-        // Convert data to numbers
         data.forEach(d => {
             d.AverageHighwayMPG = +d.AverageHighwayMPG;
             d.AverageCityMPG = +d.AverageCityMPG;
         });
 
-        // Set up scales
         const x = d3.scaleLinear()
-            .domain([0, d3.max(filteredData, d => d.AverageHighwayMPG) + 5])  // Added some padding for better visibility
+            .domain([0, d3.max(filteredData, d => d.AverageHighwayMPG) + 5]) 
             .range([0, plotWidth]);
 
         const y = d3.scaleLinear()
-            .domain([0, d3.max(filteredData, d => d.AverageCityMPG) + 5])  // Added some padding for better visibility
+            .domain([0, d3.max(filteredData, d => d.AverageCityMPG) + 5])  
             .range([plotHeight, 0]);
 
         const g = svg.append("g")
-            .attr("transform", `translate(${margin.left},${margin.top})`);  // Adjusted for margins
+            .attr("transform", `translate(${margin.left},${margin.top})`);
 
-        // Add title
         svg.append("text")
             .attr("x", width / 2)
             .attr("y", margin.top / 2)
@@ -344,7 +288,7 @@
             .attr("font-weight", "bold")
             .text("Vehicle City vs. Highway MPG (<6 Engine Cylinders)");
 
-        // Add x-axis
+
         g.append("g")
             .attr("transform", `translate(0,${plotHeight})`)
             .call(d3.axisBottom(x))
@@ -355,7 +299,6 @@
             .attr("text-anchor", "end")
             .text("Vehicle Average Highway MPG");
 
-        // Add y-axis
         g.append("g")
             .call(d3.axisLeft(y))
             .append("text")
@@ -366,18 +309,16 @@
             .attr("transform", "rotate(-90)")
             .text("Vehicle Average City MPG");
 
-        // Add circles for scatter plot
         g.selectAll("circle")
             .data(filteredData)
             .enter().append("circle")
             .attr("cx", d => x(d.AverageHighwayMPG))
             .attr("cy", d => y(d.AverageCityMPG))
             .attr("r", 5)
-            .style("fill", "blue")          // Fill color of the circles
-            .style("stroke", "black")       // Border color of the circles
+            .style("fill", "blue")          
+            .style("stroke", "black")       
             .style("stroke-width", 1);
 
-        // Add annotation to the X-axis
         const annotations = [
             {
                 note: {
@@ -429,7 +370,7 @@
             .attr("transform", `translate(${margin.left},${margin.top})`)
             .call(makeAnnotations);
     </script>
-    <!-- Link container with styled navigation links -->
+
     <div id="link-container">
         <a href="index.html" class="nav-link back">&larr; Go to Home Page</a>
         <a href="above6Cylinders.html" class="nav-link forward">Go to 6+ Cylinders Analysis &rarr;</a>

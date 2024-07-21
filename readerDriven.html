@@ -5,74 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>6 Cylinders Analysis with Annotation</title>
     <style>
-        /* Ensure body takes up full height */
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            /* Optional: Set a font family */
         }
 
-        /* Style for the title box */
         #title-box {
             text-align: center;
-            /* Center-align the text */
             font-size: 24px;
-            /* Larger font size */
             font-weight: bold;
-            /* Bold text */
             padding: 20px;
-            /* Space around the text */
             margin-bottom: 20px;
-            /* Space below the text box */
             background-color: #f0f0f0;
-            /* Light background color */
             border-bottom: 2px solid #ccc;
-            /* Border at the bottom */
             width: 100%;
-            /* Full width of the page */
             box-sizing: border-box;
-            /* Include padding and border in width */
         }
 
-        /* Style for the narrative box */
         #narrative-box {
             text-align: left;
-            /* Left-align the text */
             font-size: 16px;
-            /* Regular font size */
             padding: 20px;
-            /* Space around the text */
             margin-bottom: 20px;
-            /* Space below the text box */
             background-color: #fafafa;
-            /* Light background color */
             border: 1px solid #ddd;
-            /* Border around the box */
             width: 100%;
-            /* Full width of the page */
             box-sizing: border-box;
-            /* Include padding and border in width */
         }
 
-        /* Style for the SVG container */
         svg {
             display: block;
             margin: 0 auto;
-            /* Center the SVG horizontally */
             border: 1px solid #ccc;
-            /* Optional: Border for visibility */
         }
 
-        /* Style for the link container */
         #link-container {
             display: flex;
-            /* Use flexbox to align links */
             justify-content: space-between;
-            /* Space links apart */
             margin-top: 20px;
-            /* Space above the link container */
             padding: 0 20px;
-            /* Horizontal padding */
         }
 
         #controls {
@@ -80,53 +51,48 @@
             margin: 20px;
         }
 
-        /* Style for individual navigation links */
         .nav-link {
             text-decoration: none;
-            /* Remove underline from links */
             font-size: 18px;
-            /* Font size for the links */
             font-weight: bold;
-            /* Bold text for the links */
             padding: 10px 20px;
-            /* Space around the text */
             border-radius: 5px;
-            /* Rounded corners */
             display: inline-block;
-            /* Ensure padding and background work */
         }
 
-        /* Style for the back link */
         .nav-link.back {
             background-color: #ffdddd;
-            /* Light red background */
             color: #d80000;
-            /* Red text */
         }
 
-        /* Style for the forward link */
         .nav-link.forward {
             background-color: #ddffdd;
-            /* Light green background */
             color: #007700;
-            /* Dark green text */
         }
 
         .nav-link:hover {
             opacity: 0.8;
-            /* Slightly transparent on hover */
         }
 
-        /* Style for the back link hover */
         .nav-link.back:hover {
             background-color: #ffcccc;
-            /* Slightly darker red */
         }
 
-        /* Style for the forward link hover */
         .nav-link.forward:hover {
             background-color: #ccffcc;
-            /* Slightly darker green */
+        }
+
+        .tooltip {
+            position: absolute;
+            text-align: left;
+            width: 150px;
+            height: auto;
+            padding: 10px;
+            font: 12px sans-serif;
+            background: lightsteelblue;
+            border: 0px;
+            border-radius: 8px;
+            pointer-events: none;
         }
     </style>
 </head>
@@ -139,12 +105,13 @@
         Now you'll have an opportunity to explore the data and analyze the trends on your own.
         We've shown that more engine cylinders coincides with lower MPG values and less efficiency.
         Other opportunities and additional parameters can be adjusted here.
+        Hover over the points to get additional data.
     </div>
 
     <div id="controls">
-        <label for="min-cylinders">Min Cylinders:</label>
+        <label for="min-cylinders">Min Engine Cylinders:</label>
         <input type="number" id="min-cylinders" value="0">
-        <label for="max-cylinders">Max Cylinders:</label>
+        <label for="max-cylinders">Max Engine Cylinders:</label>
         <input type="number" id="max-cylinders" value="12"><br><br>
         <label for="fuel-type">Fuel Type:</label><br>
         <input type="checkbox" id="gasoline" name="fuel" value="Gasoline">
@@ -312,44 +279,40 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-annotation/2.5.1/d3-annotation.min.js"></script>
     <script>
-        // Function to parse the CSV data from the script tag
+
         function parseCSVFromScript(scriptId) {
             const csvData = document.getElementById(scriptId).textContent.trim();
             return d3.csvParse(csvData);
         }
 
-        // Parse the data from the script tag with id 'csv-data'
         const data = parseCSVFromScript('csv-data');
 
-        // Set up SVG dimensions and margins
         const margin = {top: 50, right: 50, bottom: 50, left: 50},
               width = 800 - margin.left - margin.right,
               height = 600 - margin.top - margin.bottom;
 
-        // Create SVG container
+
         const svg = d3.select("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
             .append("g")
             .attr("transform", `translate(${margin.left},${margin.top})`);
 
-        // Define scales
         const x = d3.scaleLinear()
             .range([0, width]);
 
         const y = d3.scaleLinear()
             .range([height, 0]);
 
-        // Add X axis
+
         const xAxis = svg.append("g")
             .attr("transform", `translate(0,${height})`)
             .attr("class", "x-axis");
 
-        // Add Y axis
+
         const yAxis = svg.append("g")
             .attr("class", "y-axis");
 
-        // Add X axis label
         svg.append("text")
             .attr("class", "x-axis-label")
             .attr("x", width / 2)
@@ -358,7 +321,7 @@
             .style("text-anchor", "middle")
             .text("Vehicle Average Highway MPG");
 
-        // Add Y axis label
+
         svg.append("text")
             .attr("class", "y-axis-label")
             .attr("transform", "rotate(-90)")
@@ -368,26 +331,29 @@
             .style("text-anchor", "middle")
             .text("Vehicle Average City MPG");
 
-        // Function to update the chart based on the specified range of EngineCylinders
+
+        // Add tooltip div
+        const tooltip = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
+
         function updateChart() {
             const minCylinders = +document.getElementById('min-cylinders').value;
             const maxCylinders = +document.getElementById('max-cylinders').value;
             const selectedFuels = Array.from(document.querySelectorAll('input[name="fuel"]:checked')).map(checkbox => checkbox.value);
 
-            // Filter data to include only vehicles within the specified range of engine cylinders and selected fuel types
+            // Filter data 
             const filteredData = data.filter(d => 
                 +d.EngineCylinders >= minCylinders && 
                 +d.EngineCylinders <= maxCylinders &&
                 (selectedFuels.length === 0 || selectedFuels.includes(d.Fuel))
             );
-            // Update scales
+            // Update 
             x.domain(d3.extent(filteredData, d => +d.AverageHighwayMPG));
             y.domain(d3.extent(filteredData, d => +d.AverageCityMPG));
 
-            // Remove existing circles
             svg.selectAll("circle").remove();
 
-            // Add circles for scatter plot
             svg.selectAll("circle")
                 .data(filteredData)
                 .enter().append("circle")
@@ -396,19 +362,29 @@
                 .attr("r", 5)
                 .style("fill", "blue")
                 .style("stroke", "black")
-                .style("stroke-width", 1);
+                .style("stroke-width", 1)
+                .on("mouseover", (event, d) => {
+                    tooltip.transition()
+                        .duration(200)
+                        .style("opacity", .9);
+                    tooltip.html(`Make: ${d.Make}<br>Fuel: ${d.Fuel}<br>Engine Cylinders: ${d.EngineCylinders}<br>Highway MPG: ${d.AverageHighwayMPG}<br>City MPG: ${d.AverageCityMPG}`)
+                        .style("left", (event.pageX + 5) + "px")
+                        .style("top", (event.pageY - 28) + "px");
+                })
+                .on("mouseout", d => {
+                    tooltip.transition()
+                        .duration(500)
+                        .style("opacity", 0);
+                });
 
-            // Update X axis
+
             svg.select(".x-axis").call(d3.axisBottom(x));
 
-            // Update Y axis
             svg.select(".y-axis").call(d3.axisLeft(y));
         }
 
-        // Event listener for the update button
         document.getElementById('update-chart').addEventListener('click', updateChart);
 
-        // Initial call to display the chart with default filter
         updateChart();
     </script>
     <div id="link-container">
