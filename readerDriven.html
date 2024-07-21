@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>6 Cylinders Analysis with Annotation</title>
+    <style>
+        /* Ensure body takes up full height */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            /* Optional: Set a font family */
+        }
+
+        /* Style for the title box */
+        #title-box {
+            text-align: center;
+            /* Center-align the text */
+            font-size: 24px;
+            /* Larger font size */
+            font-weight: bold;
+            /* Bold text */
+            padding: 20px;
+            /* Space around the text */
+            margin-bottom: 20px;
+            /* Space below the text box */
+            background-color: #f0f0f0;
+            /* Light background color */
+            border-bottom: 2px solid #ccc;
+            /* Border at the bottom */
+            width: 100%;
+            /* Full width of the page */
+            box-sizing: border-box;
+            /* Include padding and border in width */
+        }
+
+        /* Style for the narrative box */
+        #narrative-box {
+            text-align: left;
+            /* Left-align the text */
+            font-size: 16px;
+            /* Regular font size */
+            padding: 20px;
+            /* Space around the text */
+            margin-bottom: 20px;
+            /* Space below the text box */
+            background-color: #fafafa;
+            /* Light background color */
+            border: 1px solid #ddd;
+            /* Border around the box */
+            width: 100%;
+            /* Full width of the page */
+            box-sizing: border-box;
+            /* Include padding and border in width */
+        }
+
+        /* Style for the SVG container */
+        svg {
+            display: block;
+            margin: 0 auto;
+            /* Center the SVG horizontally */
+            border: 1px solid #ccc;
+            /* Optional: Border for visibility */
+        }
+
+        /* Style for the link container */
+        #link-container {
+            display: flex;
+            /* Use flexbox to align links */
+            justify-content: space-between;
+            /* Space links apart */
+            margin-top: 20px;
+            /* Space above the link container */
+            padding: 0 20px;
+            /* Horizontal padding */
+        }
+
+        #controls {
+            text-align: center;
+            margin: 20px;
+        }
+
+        /* Style for individual navigation links */
+        .nav-link {
+            text-decoration: none;
+            /* Remove underline from links */
+            font-size: 18px;
+            /* Font size for the links */
+            font-weight: bold;
+            /* Bold text for the links */
+            padding: 10px 20px;
+            /* Space around the text */
+            border-radius: 5px;
+            /* Rounded corners */
+            display: inline-block;
+            /* Ensure padding and background work */
+        }
+
+        /* Style for the back link */
+        .nav-link.back {
+            background-color: #ffdddd;
+            /* Light red background */
+            color: #d80000;
+            /* Red text */
+        }
+
+        /* Style for the forward link */
+        .nav-link.forward {
+            background-color: #ddffdd;
+            /* Light green background */
+            color: #007700;
+            /* Dark green text */
+        }
+
+        .nav-link:hover {
+            opacity: 0.8;
+            /* Slightly transparent on hover */
+        }
+
+        /* Style for the back link hover */
+        .nav-link.back:hover {
+            background-color: #ffcccc;
+            /* Slightly darker red */
+        }
+
+        /* Style for the forward link hover */
+        .nav-link.forward:hover {
+            background-color: #ccffcc;
+            /* Slightly darker green */
+        }
+    </style>
+</head>
+<body>
+    <div id="title-box">
+        Freeform Analysis of Engine Cylinders on MPG
+    </div>
+
+    <div id="narrative-box">
+        Now you'll have an opportunity to explore the data and analyze the trends on your own.
+        We've shown that more engine cylinders coincides with lower MPG values and less efficiency.
+        Other opportunities and additional parameters can be adjusted here.
+    </div>
+
+    <div id="controls">
+        <label for="min-cylinders">Min Cylinders:</label>
+        <input type="number" id="min-cylinders" value="0">
+        <label for="max-cylinders">Max Cylinders:</label>
+        <input type="number" id="max-cylinders" value="12"><br><br>
+        <label for="fuel-type">Fuel Type:</label><br>
+        <input type="checkbox" id="gasoline" name="fuel" value="Gasoline">
+        <label for="gasoline">Gasoline</label><br>
+        <input type="checkbox" id="electricity" name="fuel" value="Electricity">
+        <label for="electricity">Electricity</label><br>
+        <input type="checkbox" id="diesel" name="fuel" value="Diesel">
+        <label for="diesel">Diesel</label><br><br>
+        <button id="update-chart">Update Chart</button>
+    </div>
+
+    <svg width="800" height="600"></svg>
+
+    <script id="csv-data" type="text/csv">
+        Make,Fuel,EngineCylinders,AverageHighwayMPG,AverageCityMPG
+        Acura,Gasoline,4,35,25
+        Acura,Gasoline,6,28,21
+        Alfa Romeo,Gasoline,4,33,24
+        Alfa Romeo,Gasoline,6,24,17
+        Aston Martin,Gasoline,12,19,12
+        Audi,Gasoline,4,30,23
+        Audi,Gasoline,6,27,19
+        Audi,Gasoline,8,26,17
+        Audi,Gasoline,10,22,14
+        Audi,Gasoline,4,32,24
+        Bentley,Gasoline,8,22,13
+        Bentley,Gasoline,12,20,12
+        BMW,Diesel,4,41,30
+        BMW,Diesel,6,29,23
+        BMW,Electricity,0,109,133
+        BMW,Gasoline,2,33,36
+        BMW,Gasoline,3,29,28
+        BMW,Gasoline,4,32,23
+        BMW,Gasoline,6,28,19
+        BMW,Gasoline,8,23,15
+        BMW,Gasoline,12,20,13
+        Buick,Gasoline,4,27,20
+        Buick,Gasoline,4,31,23
+        Buick,Gasoline,6,26,18
+        Cadillac,Gasoline,4,30,22
+        Cadillac,Gasoline,6,25,17
+        Cadillac,Gasoline,8,21,14
+        Cadillac,Gasoline,4,32,22
+        Cadillac,Gasoline,6,26,18
+        Cadillac,Gasoline,8,21,15
+        Chevrolet,Diesel,4,29,21
+        Chevrolet,Electricity,0,110,128
+        Chevrolet,Gasoline,4,31,21
+        Chevrolet,Gasoline,8,23,15
+        Chevrolet,Gasoline,4,34,27
+        Chevrolet,Gasoline,6,24,17
+        Chevrolet,Gasoline,8,21,15
+        Chrysler,Gasoline,8,25,16
+        Chrysler,Gasoline,4,36,23
+        Chrysler,Gasoline,6,29,20
+        Dodge,Gasoline,8,24,15
+        Dodge,Gasoline,8,23,14
+        Dodge,Gasoline,10,19,12
+        Dodge,Gasoline,4,25,19
+        Dodge,Gasoline,6,27,18
+        Ferrari,Gasoline,8,22,16
+        Ferrari,Gasoline,12,16,12
+        Fiat,Electricity,0,103,121
+        Fiat,Gasoline,4,34,26
+        Fiat,Gasoline,4,30,22
+        Ford,Electricity,0,96,118
+        Ford,Gasoline,4,25,19
+        Ford,Gasoline,6,18,11
+        Ford,Gasoline,8,21,14
+        Ford,Gasoline,3,40,29
+        Ford,Gasoline,4,31,24
+        Ford,Gasoline,6,23,17
+        Ford,Gasoline,8,22,15
+        Genesis,Gasoline,6,24,17
+        Genesis,Gasoline,8,23,15
+        Genesis,Gasoline,6,27,17
+        GMC,Diesel,4,29,21
+        GMC,Gasoline,4,27,20
+        GMC,Gasoline,6,23,17
+        GMC,Gasoline,8,21,15
+        Honda,Gasoline,4,38,30
+        Honda,Gasoline,4,37,29
+        Honda,Gasoline,6,28,19
+        Hyundai,Electricity,0,122,150
+        Hyundai,Gasoline,4,34,27
+        Hyundai,Gasoline,6,25,18
+        Infiniti,Gasoline,4,30,22
+        Infiniti,Gasoline,6,27,20
+        Infiniti,Gasoline,8,22,15
+        Infiniti,Gasoline,4,27,25
+        Jaguar,Diesel,4,39,30
+        Jaguar,Gasoline,4,30,21
+        Jaguar,Gasoline,6,26,18
+        Jaguar,Gasoline,8,23,15
+        Jeep,Gasoline,6,27,19
+        Jeep,Gasoline,8,22,14
+        Jeep,Gasoline,4,31,24
+        Jeep,Gasoline,8,19,13
+        Jeep,Gasoline,4,27,21
+        Jeep,Gasoline,6,22,17
+        Kia,Electricity,0,92,120
+        Kia,Gasoline,8,23,15
+        Kia,Gasoline,4,33,27
+        Kia,Gasoline,6,25,18
+        Lamborghini,Gasoline,10,21,14
+        Lamborghini,Gasoline,12,17,10
+        Land Rover,Diesel,6,28,22
+        Land Rover,Gasoline,4,27,20
+        Land Rover,Gasoline,6,23,17
+        Land Rover,Gasoline,8,19,14
+        Lexus,Gasoline,4,30,22
+        Lexus,Gasoline,6,28,21
+        Lexus,Gasoline,8,22,16
+        Lexus,Gasoline,4,36,39
+        Lexus,Gasoline,6,28,20
+        Lincoln,Gasoline,4,29,23
+        Lincoln,Gasoline,6,24,16
+        Lotus,Gasoline,6,24,17
+        Maserati,Gasoline,6,24,16
+        Maserati,Gasoline,8,20,14
+        Mazda,Gasoline,4,34,26
+        Mazda,Gasoline,4,35,27
+        McLaren Automotive,Gasoline,8,23,16
+        Mercedes-Benz,Electricity,0,82,85
+        Mercedes-Benz,Gasoline,4,30,23
+        Mercedes-Benz,Gasoline,6,25,19
+        Mercedes-Benz,Gasoline,8,22,16
+        Mercedes-Benz,Gasoline,12,20,13
+        MINI,Gasoline,4,33,24
+        Mitsubishi,Electricity,0,102,121
+        Mitsubishi,Gasoline,6,27,20
+        Mitsubishi,Gasoline,3,42,35
+        Mitsubishi,Gasoline,4,31,24
+        Nissan,Electricity,0,101,124
+        Nissan,Gasoline,4,31,26
+        Nissan,Gasoline,6,26,18
+        Nissan,Gasoline,4,33,26
+        Nissan,Gasoline,6,25,18
+        Nissan,Gasoline,8,20,14
+        Porsche,Gasoline,4,27,21
+        Porsche,Gasoline,6,26,19
+        Porsche,Gasoline,8,21,14
+        Ram,Gasoline,8,21,14
+        Ram,Gasoline,4,28,21
+        Ram,Gasoline,6,24,17
+        Rolls-Royce,Gasoline,12,19,12
+        Roush Performance,Gasoline,8,23,14
+        smart,Gasoline,3,39,32
+        Subaru,Gasoline,4,27,21
+        Subaru,Gasoline,4,33,25
+        Subaru,Gasoline,6,28,20
+        Tesla,Electricity,0,98,92
+        Toyota,Gasoline,4,30,23
+        Toyota,Gasoline,4,35,32
+        Toyota,Gasoline,6,25,20
+        Toyota,Gasoline,8,18,13
+        Volkswagen,Gasoline,4,28,21
+        Volkswagen,Gasoline,4,33,24
+        Volkswagen,Gasoline,6,25,18
+        Volvo,Gasoline,4,29,22
+        Volvo,Gasoline,4,32,23
+        
+    </script>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-annotation/2.5.1/d3-annotation.min.js"></script>
+    <script>
+        // Function to parse the CSV data from the script tag
+        function parseCSVFromScript(scriptId) {
+            const csvData = document.getElementById(scriptId).textContent.trim();
+            return d3.csvParse(csvData);
+        }
+
+        // Parse the data from the script tag with id 'csv-data'
+        const data = parseCSVFromScript('csv-data');
+
+        // Set up SVG dimensions and margins
+        const margin = {top: 50, right: 50, bottom: 50, left: 50},
+              width = 800 - margin.left - margin.right,
+              height = 600 - margin.top - margin.bottom;
+
+        // Create SVG container
+        const svg = d3.select("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", `translate(${margin.left},${margin.top})`);
+
+        // Define scales
+        const x = d3.scaleLinear()
+            .range([0, width]);
+
+        const y = d3.scaleLinear()
+            .range([height, 0]);
+
+        // Add X axis
+        const xAxis = svg.append("g")
+            .attr("transform", `translate(0,${height})`)
+            .attr("class", "x-axis");
+
+        // Add Y axis
+        const yAxis = svg.append("g")
+            .attr("class", "y-axis");
+
+        // Add X axis label
+        svg.append("text")
+            .attr("class", "x-axis-label")
+            .attr("x", width / 2)
+            .attr("y", height + margin.bottom - 10)
+            .attr("fill", "#000")
+            .style("text-anchor", "middle")
+            .text("Vehicle Average Highway MPG");
+
+        // Add Y axis label
+        svg.append("text")
+            .attr("class", "y-axis-label")
+            .attr("transform", "rotate(-90)")
+            .attr("x", -height / 2)
+            .attr("y", -margin.left + 20)
+            .attr("fill", "#000")
+            .style("text-anchor", "middle")
+            .text("Vehicle Average City MPG");
+
+        // Function to update the chart based on the specified range of EngineCylinders
+        function updateChart() {
+            const minCylinders = +document.getElementById('min-cylinders').value;
+            const maxCylinders = +document.getElementById('max-cylinders').value;
+            const selectedFuels = Array.from(document.querySelectorAll('input[name="fuel"]:checked')).map(checkbox => checkbox.value);
+
+            // Filter data to include only vehicles within the specified range of engine cylinders and selected fuel types
+            const filteredData = data.filter(d => 
+                +d.EngineCylinders >= minCylinders && 
+                +d.EngineCylinders <= maxCylinders &&
+                (selectedFuels.length === 0 || selectedFuels.includes(d.Fuel))
+            );
+            // Update scales
+            x.domain(d3.extent(filteredData, d => +d.AverageHighwayMPG));
+            y.domain(d3.extent(filteredData, d => +d.AverageCityMPG));
+
+            // Remove existing circles
+            svg.selectAll("circle").remove();
+
+            // Add circles for scatter plot
+            svg.selectAll("circle")
+                .data(filteredData)
+                .enter().append("circle")
+                .attr("cx", d => x(+d.AverageHighwayMPG))
+                .attr("cy", d => y(+d.AverageCityMPG))
+                .attr("r", 5)
+                .style("fill", "blue")
+                .style("stroke", "black")
+                .style("stroke-width", 1);
+
+            // Update X axis
+            svg.select(".x-axis").call(d3.axisBottom(x));
+
+            // Update Y axis
+            svg.select(".y-axis").call(d3.axisLeft(y));
+        }
+
+        // Event listener for the update button
+        document.getElementById('update-chart').addEventListener('click', updateChart);
+
+        // Initial call to display the chart with default filter
+        updateChart();
+    </script>
+    <div id="link-container">
+        <a href="above6Cylinders.html" class="nav-link back">&larr; Go to &gt6 Cylinder Analysis</a>
+    </div>
+</body>
+</html>
